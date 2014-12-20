@@ -10,5 +10,6 @@
 #define JookBox_JookBox_Bridging_Header_h
 
 #import <Spotify/Spotify.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #endif

@@ -18,7 +18,6 @@
 		B870E5D71A369A6E00F226D9 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B870E5D61A369A6E00F226D9 /* CloudKit.framework */; };
 		B870E5D91A369AAA00F226D9 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B870E5D81A369AAA00F226D9 /* ExternalAccessory.framework */; };
 		B870E5DB1A369B3100F226D9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B870E5DA1A369B3100F226D9 /* AVFoundation.framework */; };
-		B870E5DD1A369B7100F226D9 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B870E5DC1A369B7100F226D9 /* Spotify.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +50,6 @@
 		B870E5D61A369A6E00F226D9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B870E5D81A369AAA00F226D9 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		B870E5DA1A369B3100F226D9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		B870E5DC1A369B7100F226D9 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +58,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B870E5DB1A369B3100F226D9 /* AVFoundation.framework in Frameworks */,
-				B870E5DD1A369B7100F226D9 /* Spotify.framework in Frameworks */,
 				B870E5D71A369A6E00F226D9 /* CloudKit.framework in Frameworks */,
 				A94A98AA655FA33F9B4EA7B3 /* libPods-JookBox.a in Frameworks */,
 				B870E5D91A369AAA00F226D9 /* ExternalAccessory.framework in Frameworks */,
@@ -81,7 +78,6 @@
 		85C6A67E18ED143834AE9C3A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B870E5DC1A369B7100F226D9 /* Spotify.framework */,
 				B870E5DA1A369B3100F226D9 /* AVFoundation.framework */,
 				B870E5D81A369AAA00F226D9 /* ExternalAccessory.framework */,
 				B870E5D61A369A6E00F226D9 /* CloudKit.framework */,
