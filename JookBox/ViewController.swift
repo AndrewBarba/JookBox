@@ -10,16 +10,28 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    let spotify = Spotify.spotify
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "ready:", name: SpotifyLoginCompleteNotificationKey, object: nil)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.spotify.login()
     }
-
-
+    
+    func ready(notification: NSNotification) {
+        println("Ready!")
+        
+        self.spotify.search("rather be") {
+            results, error in
+            let track = results[0] as SPTPartialTrack
+            self.spotify.playTrack(track.identifier)
+        }
+    }
 }
 
