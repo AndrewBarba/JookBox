@@ -41,6 +41,19 @@ class Connect: NSObject, MCSessionDelegate, MCNearbyServiceAdvertiserDelegate, M
     }
 }
 
+// MARK: - Messaging
+
+extension Connect {
+    
+    func sendMessageToPeer(peerID: MCPeerID, message: AnyObject) {
+        if let session = self.connectedPeers[peerID] {
+            if let data = NSJSONSerialization.dataWithJSONObject(message, options: nil, error: nil) {
+                session.sendData(data, toPeers: [peerID], withMode: MCSessionSendDataMode.Reliable, error: nil)
+            }
+        }
+    }
+}
+
 // MARK: - Advertising
 
 extension Connect {
@@ -120,8 +133,7 @@ extension Connect {
     
     // Received data from remote peer
     func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!) {
-        let object: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil)
-        if let json: AnyObject = object {
+        if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
             NSNotificationCenter.defaultCenter().postNotificationName(TLMultipeerMessageRecievedNotification, object: json)
         }
     }
