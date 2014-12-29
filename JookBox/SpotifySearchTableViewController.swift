@@ -46,8 +46,10 @@ class SpotifySearchTableViewController: UITableViewController, UITextFieldDelega
     
     func search(query: String) {
         Spotify.spotify.search(query) {
-            results, error in
-            self.tracks = results as [SPTPartialTrack]
+            _results, _error in
+            if let results = _results {
+                self.tracks = results as [SPTPartialTrack]
+            }
         }
     }
 

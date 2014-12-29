@@ -38,8 +38,8 @@ public class Spotify {
     /**
         Spotify
     */
-    private var session: SPTSession?
-    private let player = SPTAudioStreamingController(clientId: kSpotifyClientId)
+    public var session: SPTSession?
+    public let player = SPTAudioStreamingController(clientId: kSpotifyClientId)
     
     /**
         Initialization
@@ -76,7 +76,7 @@ extension Spotify {
 
 extension Spotify {
     
-    public func search(query: String, complete: ([AnyObject], NSError?)->()) {
+    public func search(query: String, complete: ([AnyObject]?, NSError?)->()) {
         SPTRequest.performSearchWithQuery(query, queryType: SPTSearchQueryType.QueryTypeTrack, session: self.session) {
             _error, _page in
             if let page = _page as? SPTListPage {

@@ -12,13 +12,11 @@
 		B8305DCF1A51BAF4007CD121 /* PlaylistTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8305DCE1A51BAF4007CD121 /* PlaylistTableViewController.swift */; };
 		B8305DD11A51C421007CD121 /* SpotifySearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8305DD01A51C421007CD121 /* SpotifySearchTableViewController.swift */; };
 		B870E5AC1A36973D00F226D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B870E5AB1A36973D00F226D9 /* AppDelegate.swift */; };
-		B870E5AE1A36973D00F226D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B870E5AD1A36973D00F226D9 /* ViewController.swift */; };
 		B870E5B11A36973D00F226D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B870E5AF1A36973D00F226D9 /* Main.storyboard */; };
 		B870E5B31A36973D00F226D9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B870E5B21A36973D00F226D9 /* Images.xcassets */; };
 		B870E5B61A36973D00F226D9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B870E5B41A36973D00F226D9 /* LaunchScreen.xib */; };
 		B870E5C21A36973E00F226D9 /* JookBoxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B870E5C11A36973E00F226D9 /* JookBoxTests.swift */; };
 		B870E5D41A3699BA00F226D9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B870E5D31A3699BA00F226D9 /* AudioToolbox.framework */; };
-		B870E5D71A369A6E00F226D9 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B870E5D61A369A6E00F226D9 /* CloudKit.framework */; };
 		B870E5D91A369AAA00F226D9 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B870E5D81A369AAA00F226D9 /* ExternalAccessory.framework */; };
 		B870E5DB1A369B3100F226D9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B870E5DA1A369B3100F226D9 /* AVFoundation.framework */; };
 		B8F2DD3C1A460A8C00B75DCD /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F2DD3B1A460A8C00B75DCD /* Spotify.swift */; };
@@ -45,7 +43,6 @@
 		B870E5A61A36973D00F226D9 /* JookBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JookBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B870E5AA1A36973D00F226D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B870E5AB1A36973D00F226D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B870E5AD1A36973D00F226D9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B870E5B01A36973D00F226D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B870E5B21A36973D00F226D9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B870E5B51A36973D00F226D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -55,7 +52,6 @@
 		B870E5CB1A3698B400F226D9 /* JookBox-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JookBox-Bridging-Header.h"; sourceTree = "<group>"; };
 		B870E5D31A3699BA00F226D9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		B870E5D51A3699BA00F226D9 /* JookBox.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = JookBox.entitlements; sourceTree = "<group>"; };
-		B870E5D61A369A6E00F226D9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B870E5D81A369AAA00F226D9 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		B870E5DA1A369B3100F226D9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B8F2DD3B1A460A8C00B75DCD /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
@@ -68,7 +64,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B870E5DB1A369B3100F226D9 /* AVFoundation.framework in Frameworks */,
-				B870E5D71A369A6E00F226D9 /* CloudKit.framework in Frameworks */,
 				A94A98AA655FA33F9B4EA7B3 /* libPods-JookBox.a in Frameworks */,
 				B870E5D91A369AAA00F226D9 /* ExternalAccessory.framework in Frameworks */,
 				B870E5D41A3699BA00F226D9 /* AudioToolbox.framework in Frameworks */,
@@ -90,7 +85,6 @@
 			children = (
 				B870E5DA1A369B3100F226D9 /* AVFoundation.framework */,
 				B870E5D81A369AAA00F226D9 /* ExternalAccessory.framework */,
-				B870E5D61A369A6E00F226D9 /* CloudKit.framework */,
 				B870E5D31A3699BA00F226D9 /* AudioToolbox.framework */,
 				A1E7D13A9C729D73001CD5C2 /* libPods-JookBox.a */,
 			);
@@ -167,7 +161,6 @@
 		B870E5CC1A36991C00F226D9 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				B870E5AD1A36973D00F226D9 /* ViewController.swift */,
 				B870E5CD1A36992100F226D9 /* Delegate */,
 				B870E5CE1A36992900F226D9 /* UI */,
 				B870E5D21A36995200F226D9 /* Services */,
@@ -290,7 +283,7 @@
 								enabled = 1;
 							};
 							com.apple.iCloud = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -380,7 +373,6 @@
 				B8F2DD3C1A460A8C00B75DCD /* Spotify.swift in Sources */,
 				B8305DCF1A51BAF4007CD121 /* PlaylistTableViewController.swift in Sources */,
 				B8305DD11A51C421007CD121 /* SpotifySearchTableViewController.swift in Sources */,
-				B870E5AE1A36973D00F226D9 /* ViewController.swift in Sources */,
 				B8F2DD401A46384900B75DCD /* Connect.swift in Sources */,
 				B8305DCD1A51A47D007CD121 /* DiscoverTableViewController.swift in Sources */,
 				B870E5AC1A36973D00F226D9 /* AppDelegate.swift in Sources */,

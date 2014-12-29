@@ -34,17 +34,34 @@ class PlaylistTableViewController: UITableViewController, SpotifySearchDelegate 
         
         self.title = self.playlistName
         
+        self.spotify.player.playbackDelegate = self
+        
         NSNotificationCenter
             .defaultCenter()
             .addObserver(self, selector: "handleMessageRecieved:", name: MultipeerMessageRecievedNotification, object: nil)
+        
+        NSNotificationCenter
+            .defaultCenter()
+            .addObserver(self, selector: "handleClientConnected:", name: MultipeerClientConnectedNotification, object: nil)
         
         if self.isHost {
             self.connect.startAdvertising(self.playlistName)
         }
     }
     
+    deinit {
+        self.spotify.player.playbackDelegate = nil
+    }
+    
     @IBAction func handleStopTapped(sender: AnyObject) {
-        self.connect.stopAdvertising()
+        if self.isHost {
+            self.connect.stopAdvertising()
+            self.connect.session.disconnect()
+            self.spotify.player.playbackDelegate = nil
+            self.spotify.player.stop(nil)
+        } else {
+            self.connect.session.disconnect()
+        }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -67,7 +84,7 @@ class PlaylistTableViewController: UITableViewController, SpotifySearchDelegate 
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return self.isHost
+        return self.isHost && indexPath.row > 0
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -113,6 +130,18 @@ class PlaylistTableViewController: UITableViewController, SpotifySearchDelegate 
     
     // MARK: - Multipeer
     
+    func handleClientConnected(notification: NSNotification) {
+        if self.isHost {
+            if let peerID = notification.object as? MCPeerID {
+                let data = [
+                    "method": "playlist",
+                    "data": self.playlist
+                ]
+                Connect.connect.sendMessageToPeer(peerID, message: data)
+            }
+        }
+    }
+    
     func handleMessageRecieved(notification: NSNotification) {
         let object = notification.object as [String: AnyObject]
         let message = object["message"] as [String: AnyObject]
@@ -149,4 +178,19 @@ class PlaylistTableViewController: UITableViewController, SpotifySearchDelegate 
         Connect.connect.broadcastMessage(data)
     }
 
+}
+
+extension PlaylistTableViewController: SPTAudioStreamingPlaybackDelegate {
+    
+    func audioStreaming(audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: NSURL!) {
+        if self.playlist.count > 0 {
+            self.playlist.removeAtIndex(0)
+            if self.playlist.count > 0 {
+                let track = self.playlist[0]
+                let id = track["id"]
+                self.spotify.playTrack(id!)
+            }
+            self.sendPlaylist()
+        }
+    }
 }

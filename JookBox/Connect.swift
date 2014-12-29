@@ -13,6 +13,7 @@ import MultipeerConnectivity
     Notifications
 */
 public let MultipeerMessageRecievedNotification = "com.abarba.JookBox.multipeer.message.recieved"
+public let MultipeerClientConnectedNotification = "com.abarba.JookBox.multipeer.client.connected"
 public let MultipperNearbyPeersChangedNotification = "com.abarba.JookBox.multipeer.nearbypeers.changed"
 
 /**
@@ -27,25 +28,33 @@ private let _Connect = Connect()
 
 class Connect: NSObject {
     
-    private let localPeerID = MCPeerID(displayName: UIDevice.currentDevice().name)
+    let localPeerID = MCPeerID(displayName: UIDevice.currentDevice().name)
     
-    private var session: MCSession! {
+    var session: MCSession! {
+        willSet {
+            if let session = self.session {
+                session.delegate = nil
+            }
+        }
         didSet {
             session.delegate = self
         }
     }
+    
     private var advertiser: MCNearbyServiceAdvertiser! {
         didSet {
             advertiser.delegate = self
         }
     }
+    
     private var browser: MCNearbyServiceBrowser! {
         didSet {
             browser.delegate = self
         }
     }
     
-    private var discoverName = ""
+    private var callbacks: [MCPeerID:()->()] = [:]
+    
     var nearbyPeers: [MCPeerID] = []
     var peerInfo: [MCPeerID:String] = [:]
     
@@ -62,14 +71,26 @@ class Connect: NSObject {
 extension Connect {
     
     func sendMessageToPeer(peerID: MCPeerID, message: AnyObject) {
-        if let data = NSJSONSerialization.dataWithJSONObject(message, options: nil, error: nil) {
-            self.session.sendData(data, toPeers: [peerID], withMode: MCSessionSendDataMode.Reliable, error: nil)
+        dispatch_async(dispatch_get_main_queue()) {
+            if let data = NSJSONSerialization.dataWithJSONObject(message, options: nil, error: nil) {
+                var error: NSError? = nil
+                self.session.sendData(data, toPeers: [peerID], withMode: MCSessionSendDataMode.Reliable, error: &error)
+                if let error = error {
+                    println(error)
+                }
+            }
         }
     }
     
     func broadcastMessage(message: AnyObject) {
-        if let data = NSJSONSerialization.dataWithJSONObject(message, options: nil, error: nil) {
-            self.session.sendData(data, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Reliable, error: nil)
+        dispatch_async(dispatch_get_main_queue()) {
+            if let data = NSJSONSerialization.dataWithJSONObject(message, options: nil, error: nil) {
+                var error: NSError? = nil
+                self.session.sendData(data, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Reliable, error: nil)
+                if let error = error {
+                    println(error)
+                }
+            }
         }
     }
 }
@@ -100,23 +121,34 @@ extension Connect: MCNearbyServiceBrowserDelegate {
     
     func connectToPeer(peerID: MCPeerID) {
         self.session = MCSession(peer: self.localPeerID)
-        self.browser.invitePeer(peerID, toSession: self.session, withContext: nil, timeout: 30)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.browser.invitePeer(peerID, toSession: self.session, withContext: nil, timeout: 30)
+        }
+    }
+    
+    func connectToPeer(peerID: MCPeerID, completion: ()->()) {
+        self.callbacks[peerID] = completion
+        self.connectToPeer(peerID)
     }
     
     // Found a nearby advertising peer
     func browser(browser: MCNearbyServiceBrowser!, foundPeer peerID: MCPeerID!, withDiscoveryInfo info: [NSObject : AnyObject]!) {
-        if self.localPeerID.displayName != peerID.displayName && !contains(self.nearbyPeers, peerID) {
-            self.nearbyPeers.append(peerID)
-            self.peerInfo[peerID] = info["name"] as? String
-            NSNotificationCenter.defaultCenter().postNotificationName(MultipperNearbyPeersChangedNotification, object: self.nearbyPeers)
+        dispatch_async(dispatch_get_main_queue()) {
+            if self.localPeerID.displayName != peerID.displayName && !contains(self.nearbyPeers, peerID) {
+                self.nearbyPeers.append(peerID)
+                self.peerInfo[peerID] = info["name"] as? String
+                NSNotificationCenter.defaultCenter().postNotificationName(MultipperNearbyPeersChangedNotification, object: self.nearbyPeers)
+            }
         }
     }
 
     // A nearby peer has stopped advertising
     func browser(browser: MCNearbyServiceBrowser!, lostPeer peerID: MCPeerID!) {
-        if let index = find(self.nearbyPeers, peerID) {
-            self.nearbyPeers.removeAtIndex(index)
-            NSNotificationCenter.defaultCenter().postNotificationName(MultipperNearbyPeersChangedNotification, object: self.nearbyPeers)
+        dispatch_async(dispatch_get_main_queue()) {
+            if let index = find(self.nearbyPeers, peerID) {
+                self.nearbyPeers.removeAtIndex(index)
+                NSNotificationCenter.defaultCenter().postNotificationName(MultipperNearbyPeersChangedNotification, object: self.nearbyPeers)
+            }
         }
     }
     
@@ -131,7 +163,9 @@ extension Connect: MCNearbyServiceBrowserDelegate {
 extension Connect: MCNearbyServiceAdvertiserDelegate {
     
     func advertiser(advertiser: MCNearbyServiceAdvertiser!, didReceiveInvitationFromPeer peerID: MCPeerID!, withContext context: NSData!, invitationHandler: ((Bool, MCSession!) -> Void)!) {
-        invitationHandler(true, self.session)
+        dispatch_async(dispatch_get_main_queue()) {
+            invitationHandler(true, self.session)
+        }
     }
 }
 
@@ -141,14 +175,24 @@ extension Connect: MCSessionDelegate {
     
     // Remote peer changed state
     func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
-        // no op
+        dispatch_async(dispatch_get_main_queue()) {
+            println("\(self.localPeerID.displayName) <-\(state.rawValue)-> \(peerID.displayName)")
+            if state == MCSessionState.Connected {
+                self.callbacks[peerID]?()
+                NSNotificationCenter
+                    .defaultCenter()
+                    .postNotificationName(MultipeerClientConnectedNotification, object: peerID)
+            }
+        }
     }
     
     // Received data from remote peer
     func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!) {
-        if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
-            let object = [ "peer": peerID, "message": json ]
-            NSNotificationCenter.defaultCenter().postNotificationName(MultipeerMessageRecievedNotification, object: object)
+        dispatch_async(dispatch_get_main_queue()) {
+            if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
+                let object = [ "peer": peerID, "message": json ]
+                NSNotificationCenter.defaultCenter().postNotificationName(MultipeerMessageRecievedNotification, object: object)
+            }
         }
     }
     

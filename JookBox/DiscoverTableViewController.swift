@@ -55,7 +55,9 @@ class DiscoverTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let peerID = self.nearbyPeers[indexPath.row]
         let name = self.connect.peerInfo[peerID] ?? "Unknown"
-        self.connect.connectToPeer(peerID)
+        self.connect.connectToPeer(peerID) {
+            println("Connected")
+        }
         let object = [
             "name": name,
             "peer": peerID,
