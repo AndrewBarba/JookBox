@@ -56,6 +56,10 @@ extension Spotify {
         let url = auth.loginURLForClientId(kSpotifyClientId, declaredRedirectURL: NSURL(string: kSpotifyCallbackUrl), scopes: [SPTAuthStreamingScope])
         UIApplication.sharedApplication().openURL(url)
     }
+    
+    public func isLoggedIn() -> Bool {
+        return self.session != nil
+    }
 }
 
 // MARK: - Playback
